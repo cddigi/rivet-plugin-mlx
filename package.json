@@ -1,5 +1,5 @@
 {
-  "name": "rivet-plugin-example",
+  "name": "rivet-plugin-mlx",
   "packageManager": "yarn@3.5.0",
   "version": "0.0.3",
   "type": "module",
