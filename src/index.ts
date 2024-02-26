@@ -17,13 +17,13 @@ const plugin: RivetPluginInitializer = (rivet) => {
     id: "mlx-plugin",
 
     // The name of the plugin is what is displayed in the Rivet UI.
-    name: "Example Plugin",
+    name: "MLX Plugin",
 
     // Define all configuration settings in the configSpec object.
     configSpec: {
       mlxSetting: {
         type: "string",
-        label: "Example Setting",
+        label: "MLX Setting",
         description: "This is an mlx setting for the mlx plugin.",
         helperText: "This is an mlx setting for the mlx plugin.",
       },
@@ -33,7 +33,7 @@ const plugin: RivetPluginInitializer = (rivet) => {
     contextMenuGroups: [
       {
         id: "mlx",
-        label: "Example",
+        label: "MLX",
       },
     ],
 

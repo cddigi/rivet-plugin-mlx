@@ -1,6 +1,6 @@
-// src/nodes/ExamplePluginNode.ts
-function examplePluginNode(rivet) {
-  const ExamplePluginNodeImpl = {
+// src/nodes/MLXPluginNode.ts
+function mlxPluginNode(rivet) {
+  const MLXPluginNodeImpl = {
     // This should create a new instance of your node type from scratch.
     create() {
       const node = {
@@ -11,9 +11,9 @@ function examplePluginNode(rivet) {
           someData: "Hello World"
         },
         // This is the default title of your node.
-        title: "Example Plugin Node",
+        title: "MLX Plugin Node",
         // This must match the type of your node.
-        type: "examplePlugin",
+        type: "mlxPlugin",
         // X and Y should be set to 0. Width should be set to a reasonable number so there is no overflow.
         visualData: {
           x: 0,
@@ -50,10 +50,10 @@ function examplePluginNode(rivet) {
     // This returns UI information for your node, such as how it appears in the context menu.
     getUIData() {
       return {
-        contextMenuTitle: "Example Plugin",
-        group: "Example",
-        infoBoxBody: "This is an example plugin node.",
-        infoBoxTitle: "Example Plugin Node"
+        contextMenuTitle: "MLX Plugin",
+        group: "MLX",
+        infoBoxBody: "This is an mlx plugin node.",
+        infoBoxTitle: "MLX Plugin Node"
       };
     },
     // This function defines all editors that appear when you edit your node.
@@ -71,7 +71,7 @@ function examplePluginNode(rivet) {
     // what the current data of the node is in some way that is useful at a glance.
     getBody(data) {
       return rivet.dedent`
-        Example Plugin Node
+        MLX Plugin Node
         Data: ${data.useSomeDataInput ? "(Using Input)" : data.someData}
       `;
     },
@@ -93,44 +93,44 @@ function examplePluginNode(rivet) {
       };
     }
   };
-  const examplePluginNode2 = rivet.pluginNodeDefinition(
-    ExamplePluginNodeImpl,
-    "Example Plugin Node"
+  const mlxPluginNode2 = rivet.pluginNodeDefinition(
+    MLXPluginNodeImpl,
+    "MLX Plugin Node"
   );
-  return examplePluginNode2;
+  return mlxPluginNode2;
 }
 
 // src/index.ts
 var plugin = (rivet) => {
-  const exampleNode = examplePluginNode(rivet);
-  const examplePlugin = {
+  const mlxNode = mlxPluginNode(rivet);
+  const mlxPlugin = {
     // The ID of your plugin should be unique across all plugins.
-    id: "example-plugin",
+    id: "mlx-plugin",
     // The name of the plugin is what is displayed in the Rivet UI.
-    name: "Example Plugin",
+    name: "MLX Plugin",
     // Define all configuration settings in the configSpec object.
     configSpec: {
-      exampleSetting: {
+      mlxSetting: {
         type: "string",
-        label: "Example Setting",
-        description: "This is an example setting for the example plugin.",
-        helperText: "This is an example setting for the example plugin."
+        label: "MLX Setting",
+        description: "This is an mlx setting for the mlx plugin.",
+        helperText: "This is an mlx setting for the mlx plugin."
       }
     },
     // Define any additional context menu groups your plugin adds here.
     contextMenuGroups: [
       {
-        id: "example",
-        label: "Example"
+        id: "mlx",
+        label: "MLX"
       }
     ],
     // Register any additional nodes your plugin adds here. This is passed a `register`
     // function, which you can use to register your nodes.
     register: (register) => {
-      register(exampleNode);
+      register(mlxNode);
     }
   };
-  return examplePlugin;
+  return mlxPlugin;
 };
 var src_default = plugin;
 export {
