@@ -100,34 +100,140 @@ function mlxPluginNode(rivet) {
   return mlxPluginNode2;
 }
 
+// src/nodes/MLXGenerateNode.ts
+var mlxGenerate = (rivet) => {
+  const impl = {
+    create() {
+      const node = {
+        id: rivet.newId(),
+        data: {
+          model: "",
+          useModelInput: false
+        },
+        title: "MLX Generate",
+        type: "mlxGenerate",
+        visualData: {
+          x: 0,
+          y: 0,
+          width: 250
+        }
+      };
+      return node;
+    },
+    getInputDefinitions(data) {
+      const inputs = [];
+      if (data.useModelInput) {
+        inputs.push({
+          id: "model",
+          dataType: "string",
+          title: "Model"
+        });
+      }
+      return inputs;
+    },
+    getOutputDefinitions(data) {
+      let outputs = [
+        {
+          id: "output",
+          dataType: "string",
+          title: "Output",
+          description: "The output from MLX."
+        },
+        {
+          id: "prompt",
+          dataType: "string",
+          title: "Prompt",
+          description: "The full prompt, with formattting, that was sent to MLX."
+        },
+        {
+          id: "messages-sent",
+          dataType: "chat-message[]",
+          title: "Messages Sent",
+          description: "The messages sent to MLX, including the system prompt."
+        },
+        {
+          id: "all-messages",
+          dataType: "chat-message[]",
+          title: "All Messages",
+          description: "All messages, including the reply from MLX."
+        }
+      ];
+      return outputs;
+    },
+    getEditors() {
+      return [
+        {
+          type: "string",
+          dataKey: "model",
+          label: "Model",
+          useInputToggleDataKey: "useModelInput",
+          helperMessage: "The LLM model to use in MLX."
+        }
+      ];
+    },
+    getBody(data) {
+      return rivet.dedent`
+        Model: ${data.useModelInput ? "(From Input)" : data.model || "Unset!"}
+      `;
+    },
+    getUIData() {
+      return {
+        contextMenuTitle: "MLX Generate",
+        group: "MLX",
+        infoBoxBody: "This is an MLX Generate node using /v1/chat/completions.",
+        infoBoxTitle: "MLX Generate Node"
+      };
+    },
+    async process(data, inputData, context) {
+      let outputs = {};
+      return outputs;
+    }
+  };
+  return rivet.pluginNodeDefinition(impl, "MLX Generate");
+};
+
 // src/index.ts
 var plugin = (rivet) => {
-  const mlxNode = mlxPluginNode(rivet);
   const mlxPlugin = {
-    // The ID of your plugin should be unique across all plugins.
     id: "mlx-plugin",
-    // The name of the plugin is what is displayed in the Rivet UI.
     name: "MLX Plugin",
-    // Define all configuration settings in the configSpec object.
     configSpec: {
-      mlxSetting: {
+      host: {
         type: "string",
-        label: "MLX Setting",
-        description: "This is an mlx setting for the mlx plugin.",
-        helperText: "This is an mlx setting for the mlx plugin."
+        label: "HOST",
+        default: "127.0.0.1",
+        description: "Host for the HTTP server (default: 127.0.0.1)",
+        helperText: "Host for the HTTP server (default: 127.0.0.1)"
+      },
+      port: {
+        type: "string",
+        label: "PORT",
+        default: "8080",
+        description: "Port for the HTTP server (default: 8080)",
+        helperText: "Port for the HTTP server (default: 8080)"
+      },
+      adapter_file: {
+        type: "string",
+        label: "ADAPTER_FILE",
+        description: "Optional path for the trained adapter weights.",
+        helperText: "Optional path for the trained adapter weights."
+      },
+      model: {
+        type: "string",
+        label: "MODEL",
+        description: "The path to the MLX model weights, tokenizer, and config",
+        helperText: "The path to the MLX model weights, tokenizer, and config"
       }
     },
-    // Define any additional context menu groups your plugin adds here.
     contextMenuGroups: [
       {
         id: "mlx",
         label: "MLX"
       }
     ],
-    // Register any additional nodes your plugin adds here. This is passed a `register`
-    // function, which you can use to register your nodes.
     register: (register) => {
-      register(mlxNode);
+      register(mlxPluginNode(rivet));
+      register(mlxGenerate(rivet));
     }
   };
   return mlxPlugin;
