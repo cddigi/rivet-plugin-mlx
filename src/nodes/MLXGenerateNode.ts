@@ -36,6 +36,24 @@ import type {
 export type MLXGenerateNodeData = {
   model: string;
   useModelInput?: boolean;
+
+  eosToken?: string;
+  useEosToken?: boolean;
+
+  maxTokens?: number;
+  useMaxTokens?: boolean;
+
+  temp?: number;
+  useTemp?: boolean;
+
+  seed?: number;
+  useSeed?: boolean;
+
+  ignoreChatTemplate?: boolean;
+  useIgnoreChatTemplate?: boolean;
+
+  colorize?: boolean;
+  useColorize?: boolean;
 };
 
 export type MLXGenerateNode = ChartNode<"mlxGenerate", MLXGenerateNodeData>;
@@ -48,6 +66,7 @@ export const mlxGenerate = (rivet: typeof Rivet) => {
         data: {
           model: "",
           useModelInput: false,
+          maxTokens: 1024,
         },
         title: "MLX Generate",
         type: "mlxGenerate",
@@ -135,6 +154,20 @@ export const mlxGenerate = (rivet: typeof Rivet) => {
 
     async process(data, inputData, context): Promise<Outputs> {
       let outputs: Outputs = {};
+      const host = context.getPluginConfig("host") || "http://127.0.0.1";
+      if (!host.trim()) {
+        throw new Error("No host set!");
+      }
+
+      const port = context.getPluginConfig("port") || "8080";
+      if (!port.trim()) {
+        throw new Error("No port set!");
+      }
+
+      const model = rivet.getInputOrData(data, inputData, "model");
+      if (!model.trim()) {
+        throw new Error("No model set!");
+      }
 
       return outputs;
     },
