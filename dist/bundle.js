@@ -211,18 +211,6 @@ var plugin = (rivet) => {
         default: "8080",
         description: "Port for the HTTP server (default: 8080)",
         helperText: "Port for the HTTP server (default: 8080)"
-      },
-      adapter_file: {
-        type: "string",
-        label: "ADAPTER_FILE",
-        description: "Optional path for the trained adapter weights.",
-        helperText: "Optional path for the trained adapter weights."
-      },
-      model: {
-        type: "string",
-        label: "MODEL",
-        description: "The path to the MLX model weights, tokenizer, and config",
-        helperText: "The path to the MLX model weights, tokenizer, and config"
       }
     },
     contextMenuGroups: [
